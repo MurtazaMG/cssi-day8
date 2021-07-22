@@ -1,32 +1,26 @@
-const getMessages = () => {
-    const messagesRef = firebase.database().ref();
-    messagesRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        console.log(data);
-        for(let key in data) {
-            const message = data[key];
-            console.log(message);
-        }
-    });
+
+
+function display(msgObject) {
+    console.log(msgObject.message);
+    const login = document.querySelector(".login");
+    console.log(login);
+    login.classList.add("hidden");
+    console.log(login);
+    document.querySelector("#message").innerHTML = msgObject.message;
 }
 
-const findMessage = (myPass) => {
+document.querySelector("#viewMsg").addEventListener("click", () => {
+    const userPasscode = document.querySelector("#passcode").value;
+
     const messagesRef = firebase.database().ref();
-    messagesRef.on('value', (snapshot) => {
+    messagesRef.on("value", (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
         for(let key in data) {
-            const message = data[key];
-            console.log(message);
-            if(myPass == message.passcode) {
-                renderMessage(message);
+            if(userPasscode == data[key].passcode) {
+                display(data[key]);
             }
         }
-    });
-}
-document.querySelector("#viewMsg").addEventListener("click", () => {
-    const passcode = document.querySelector("#passcode").value;
-    findMessage(passcode);
+    })
 })
 
-getMessages();
+
